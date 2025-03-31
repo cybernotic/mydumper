@@ -50,11 +50,11 @@ int get_revision(){
 }
 
 gboolean is_mysql_like(){
-  return get_product() == SERVER_TYPE_PERCONA || get_product() == SERVER_TYPE_MARIADB || get_product() == SERVER_TYPE_MYSQL || get_product() == SERVER_TYPE_DOLT || get_product() == SERVER_TYPE_UNKNOWN;
+  return get_product() == SERVER_TYPE_PERCONA || get_product() == SERVER_TYPE_MARIADB || get_product() == SERVER_TYPE_MYSQL || get_product() == SERVER_TYPE_DOLT || get_product() == SERVER_TYPE_MYSQL;
 }
 
 gboolean server_support_tablespaces(){ 
-  return get_product() == SERVER_TYPE_PERCONA || get_product() == SERVER_TYPE_MYSQL || get_product() == SERVER_TYPE_UNKNOWN;
+  return get_product() == SERVER_TYPE_PERCONA || get_product() == SERVER_TYPE_MYSQL || get_product() == SERVER_TYPE_MYSQL;
 }
 
 void detect_server_version(MYSQL * conn) {
@@ -84,7 +84,7 @@ void detect_server_version(MYSQL * conn) {
   }
 
 	gchar ** sver=NULL;
-  if (product == SERVER_TYPE_UNKNOWN){
+  if (product == SERVER_TYPE_MYSQL){
     m_store_result_row_free(mr);
     mr = m_store_result_row(conn, "SELECT value FROM system.build_options where name='VERSION_FULL' LIMIT 1",m_warning,m_message,"Not able to determine database version", NULL);
     if (mr->row){
@@ -142,7 +142,7 @@ void detect_server_version(MYSQL * conn) {
         break;
       case SERVER_TYPE_MYSQL:
       case SERVER_TYPE_PERCONA:
-      case SERVER_TYPE_UNKNOWN:
+      case SERVER_TYPE_MYSQL:
         if (get_major()>=8 && (get_secondary()>0 || (get_secondary()==0 && get_revision()>=22))) {
             start_replica=START_REPLICA;
             stop_replica=STOP_REPLICA;
@@ -186,7 +186,7 @@ const gchar * get_product_name(){
   case SERVER_TYPE_TIDB:      return "TiDB"; break;
   case SERVER_TYPE_CLICKHOUSE:return "Clickhouse"; break;
   case SERVER_TYPE_DOLT:      return "Dolt"; break;
-  case SERVER_TYPE_UNKNOWN:   return "unknown"; break;
+  case SERVER_TYPE_MYSQL:   return "unknown"; break;
   default: return "";
 }
 
