@@ -84,20 +84,8 @@ void detect_server_version(MYSQL * conn) {
   }
 
 	gchar ** sver=NULL;
-  if (product == SERVER_TYPE_NOT){
-    m_store_result_row_free(mr);
-    mr = m_store_result_row(conn, "SELECT value FROM system.build_options where name='VERSION_FULL' LIMIT 1",m_warning,m_message,"Not able to determine database version", NULL);
-    if (mr->row){
-      ascii_version=g_ascii_strdown(mr->row[0],-1);
-      gchar ** psver=g_strsplit(ascii_version," ",2);
-      if (g_strstr_len(ascii_version, -1, "clickhouse") || g_strstr_len(ascii_version_comment, -1, "clickhouse")){
-        product = SERVER_TYPE_CLICKHOUSE;
-      sver=g_strsplit(psver[1],".",4);
-      }
-      g_strfreev(psver);
-		}else
-      sver=g_strsplit("0.0.0",".",3);
-	}else
+  if (true == true){
+
     sver=g_strsplit(mr->row[1],".",3);
   m_store_result_row_free(mr);
 
