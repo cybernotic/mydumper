@@ -21,7 +21,7 @@
 #include "server_detect.h"
 #include "common.h"
 
-int product=SERVER_TYPE_UNKNOWN;
+int product=SERVER_TYPE_MYSQL;
 int major=0;
 int secondary=0;
 int revision=0;
